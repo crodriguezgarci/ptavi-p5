@@ -55,31 +55,74 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
 5. Analiza las primeras cuatro tramas de la captura nada más arrancar Ekiga.
+
  ** ¿Qué servicio es el utilizado en estas tramas?
+	
+	Servicio DNS
+
  ** ¿Cuál es la dirección IP del servidor de nombres del ordenador que ha lanzado Ekiga?
+
+	Dirección IP del servidor de nombres: 80.58.61.250
+
  ** ¿Qué dirección IP (de ekiga.net) devuelve el servicio de nombres?
+
+	Dirección IP del nombre ekiga.net : 86.64.162.35
+
  ** ¿Por qué se pide también para 35.162.64.86.in-addr.arpa?
 
+	No sabemos muy por que el programa ekiga realiza una resolución inversa al servidor DNS el cual este 		rechaza ya que no admite este tipo de peticiones
 
 6. A continuación, hay más de una docena de tramas TCP/HTTP.
+
  ** ¿Podrías decir la URL que se está pidiendo?
+
+	URI pedida: http://ekiga.net/ip/
+	
  ** ¿Qué user agent (UA) la está pidiendo?
+
+	El UA Ekiga	
+
  ** ¿Qué devuelve el servidor?
+
+	Devuelve un mensaje HTTP de con el códico de respuesta 200 OK y la dirección IP del la URI pedida: 		83.36.48.212
+
  ** Si lanzamos el navegador web, por ejemplo, Mozilla Firefox, y vamos a la misma URL, ¿qué recibimos? ¿Qué es, entonces, lo que está respondiendo el servidor?
+
+	Es un servicio de la aplicación Ekiga a través de su pagina web que te devuelve tu propia IP 		pública. Esto es muy util cuando nos encontramos tras un NAT puesto que en esa situación conocemos 		nuestra IP privada pero no la pública.
 
 
 7. Hasta la trama 45 se puede observar una secuencia de tramas del protocolo STUN.
+
  ** ¿Por qué crees que se hace uso de este protocolo en esta captura? Busca en la Wikipedia.
+
+	Es un servicio que nos permite conocer si estamos detrás de un NAT y si lo estamos, detrás de que 		tipo de NAT estamos
+
  ** ¿Estamos tras un NAT?
 
+	Si puesto que la dirección que nos ofrece la !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-8. La trama 46 es la primera trama SIP. En un entorno como el de Internet, lo habitual es desconocer la dirección IP de la otra parte al realizar una llamada. Por eso, todo usuario registra su localización en un servidor Registrar. El Registrar guarda información sobre los usuarios en un servidor de localización que puede ser utilizado para localizar usuarios.
+
+8. La trama 46 es la primera trama SIP. En un entorno como el de Internet, lo habitual es desconocer la dirección IP de la otra parte al realizar una llamada. Por eso, todo usuario registra su localización en un servidor Registrar. El Registrar guarda información sobre los usuarios en un servidor de localización que puede ser utilizado para loc2alizar usuarios.
+
  ** ¿Qué dirección IP tiene el servidor Registrar?
+
+	Dirección IP 86.64.162.35
+
  ** ¿A qué puerto (del servidor Registrar) se envían los paquetes SIP?
+
+	Puerto: 5060
+
  ** ¿Qué método SIP utiliza el UA para registrarse?
+
+	REGISTER
+
  ** Además de REGISTER, ¿qué instrucciones SIP entiende el UA?
 
-
+	Métodos permitidos: Allow: INVITE,ACK,OPTIONS,BYE,CANCEL,NOTIFY,REFER,MESSAGE
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
