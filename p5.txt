@@ -13,20 +13,44 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 2. Observa que las tramas capturadas corresponden a una sesión SIP con Ekiga, un cliente de VoIP para GNOME. Responde a las siguientes cuestiones:
  ** ¿Cuántos paquetes componen la captura?
+
+	954 paquetes.
+
  ** ¿Cuánto tiempo dura la captura?
+
+	56,15 segundos.	
+
  ** ¿Qué IP tiene la máquina donde se ha efectuado la captura? ¿Se trata de una IP pública o de una IP privada? ¿Por qué lo sabes?
 
+	En la máquina con dirección IP 192.168.1.34. Por que esta dirección IP es una dirección privada por 		lo que la captura se ha tenido que realizar entre la máquina y un router NAT.
 
 3. Antes de analizar las tramas, mira las estadísticas generales que aparecen en el menú de Statistics. En el apartado de jerarquía de protocolos (Protocol Hierarchy) se puede ver el porcentaje del tráfico correspondiente al protocolo TCP y UDP.
+
  ** ¿Cuál de los dos es mayor? ¿Es esto consistente con una aplicación que transmite en tiempo real?
+
+	El porcentaje mayor es el de paquetes UDP. Si esto es consistente puesto que el protocolo UDP es 	indicado para el transporte de datos de este tipo de aplicaciones. En cambio el protocolo TCP solo lo 		utilizaremos para mensajes de control de dicha aplicaciones.
+
  ** ¿Qué otros protocolos podemos ver en la jerarquía de protocolos?
+	
+	IPv4, DNS, SIP, RTP, RTCP,HTTP, ICMP, ARP, H.261.
 
 
 4. Observa por encima el flujo de tramas en el menú de Statistics en IO Graphs. La captura que estamos viendo incluye desde la inicialización (registro) de la aplicación hasta su finalización, con una llamada entremedias.
+
  ** Filtra por sip para conocer cuándo se envían paquetes SIP. ¿En qué segundos tienen lugar esos envíos?
+
+	Desde el segundo 7,34 hasta el segundo 55.85. En los siguientes intervalos:
+
+		Del segundo 7 al segundo 9 aprox
+		Del segundo 14 al segundo 17,5 aprox
+		Del segundo 37,5 al segundo 40 aprox
+		Del segundo 55 al segundo 55.5 aprox
+
  ** Y los paquetes con RTP, ¿cuándo se envían?
+	Desde el segundo 17,17 hasta el segundo 38,11 con los siguientes intervalos:
 
-
+		Del segundo 17 al segundo 22 aprox
+		Del segundo 23 al segundo 39 aprox
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
