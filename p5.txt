@@ -127,27 +127,71 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
 9. Fijémonos en las tramas siguientes a la número 46:
+
  ** ¿Se registra con éxito en el primer intento?
+
+	No, puesto que el servidor ekiga responde con un mensaje de error: 401 Unauthorizred
+
  ** ¿Cómo sabemos si el registro se ha realizado correctamente o no?
+	
+	Lo sabemos fijandonos en el mensaje de respuesta del Servidor tras la petición REGISTER.
+
  ** ¿Podrías identificar las diferencias entre el primer intento y el segundo de registro? (fíjate en el tamaño de los paquetes y mira a qué se debe el cambio)
+
+	En el primer mensaje, el cual es rechazado, falta el campo AUTHORIZATION que si esta en el siguiente 		REGISTER, el cual es aceptado
+
  ** ¿Cuánto es el valor del tiempo de expiración de la sesión? Indica las unidades.
 
+	3600 segundos.
 
 10. Una vez registrados, podemos efectuar una llamada. Vamos a probar con el servicio de eco de Ekiga que nos permite comprobar si nos hemos conectado correctamente. El servicio de eco tiene la dirección sip:500@ekiga.net. Veamos el INVITE de cerca.
+
  ** ¿Puede verse el nombre del que efectúa la llamada, así como su dirección SIP?
+
+	Si. Nombre: Gregorio Robles Dirección SIP: grex@ekiga.net
+
  ** ¿Qué es lo que contiene el cuerpo de la trama? ¿En qué formato/protocolo está?
+
+	Protocolo SDP. Contiene todo los datos para describir la sesion, todos los formatos que soporta el 		que envia el INVITE
+
  ** ¿Tiene éxito el primer intento? ¿Cómo lo sabes?
+
+	No, puesto que le mensaje de respuesta solicita una autenticaciión del proxy
+
  ** ¿En qué se diferencia el segundo INVITE más abajo del primero? ¿A qué crees que se debe esto?
 
+	El segundo INVITE contiene el campo PROXY-AUTHORIZATION
 
 11. Una vez conectado, estudia el intercambio de tramas.
+
  ** ¿Qué protocolo(s) se utiliza(n)? ¿Para qué sirven estos protocolos?
+
+	Protocolo RTP con codec H.261 ( aunque no se enviará video) y GT.711 para el audio, por lo que se 		esta produciendo una conexión de audio entre los usuarios.
+
+	Protocolo RTCP sirve para el control del flujo RTP.
+
  ** ¿Cuál es el tamaño de paquete de los mismos?
+	
+	RTP : 214 bytes
+	H.261 : 1018 o 407 bytes
+
  ** ¿Se utilizan bits de padding?
+
+	No utilizamos bits de Padding: (PADDING = FALSE)
+
  ** ¿Cuál es la periodicidad de los paquetes que se envían?
+
+	AUDIO: GT.711
+
+	RTP = 20 ms
+	RTCP = 5s
+
+	VIDEO: H.261
+
+
  ** ¿Cuántos bits/segundo estamos enviando?
-
-
+	
+	50 bits/segundo para audio (6400/(160*8)) = 50 bits/seg)
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
