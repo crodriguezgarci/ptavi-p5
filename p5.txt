@@ -22,7 +22,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Qué IP tiene la máquina donde se ha efectuado la captura? ¿Se trata de una IP pública o de una IP privada? ¿Por qué lo sabes?
 
-	En la máquina con dirección IP 192.168.1.34. Por que esta dirección IP es una dirección privada por 		lo que la captura se ha tenido que realizar entre la máquina y un router NAT.
+	En la máquina con dirección IP 192.168.1.34. Por que esta dirección IP pertenece a la clase C por lo 		tanto es una dirección privada. Por lo tanto la captura se ha tenido que realizar entre la máquina y 		un router NAT.
 
 3. Antes de analizar las tramas, mira las estadísticas generales que aparecen en el menú de Statistics. En el apartado de jerarquía de protocolos (Protocol Hierarchy) se puede ver el porcentaje del tráfico correspondiente al protocolo TCP y UDP.
 
@@ -70,7 +70,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Por qué se pide también para 35.162.64.86.in-addr.arpa?
 
-	No sabemos muy por que el programa ekiga realiza una resolución inversa al servidor DNS el cual este 		rechaza ya que no admite este tipo de peticiones
+	No sabemos muy bien por que el programa ekiga realiza una resolución inversa al servidor DNS el cual 		este rechaza ya que no admite este tipo de peticiones
 
 6. A continuación, hay más de una docena de tramas TCP/HTTP.
 
@@ -80,7 +80,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 	
  ** ¿Qué user agent (UA) la está pidiendo?
 
-	El UA Ekiga	
+	Ekiga	
 
  ** ¿Qué devuelve el servidor?
 
@@ -99,12 +99,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Estamos tras un NAT?
 
-	Si puesto que la dirección que nos ofrece la !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+	Si puesto que la dirección que nos ofrece no es la misma que la IP de enlace (privada).
 
 8. La trama 46 es la primera trama SIP. En un entorno como el de Internet, lo habitual es desconocer la dirección IP de la otra parte al realizar una llamada. Por eso, todo usuario registra su localización en un servidor Registrar. El Registrar guarda información sobre los usuarios en un servidor de localización que puede ser utilizado para loc2alizar usuarios.
 
@@ -134,7 +129,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Cómo sabemos si el registro se ha realizado correctamente o no?
 	
-	Lo sabemos fijandonos en el mensaje de respuesta del Servidor tras la petición REGISTER.
+	Lo sabemos fijandonos en el mensaje de respuesta del Servidor tras la petición REGISTER. Si este 	 mensaje no es 200 OK, no se habrá realizado correctamente.
 
  ** ¿Podrías identificar las diferencias entre el primer intento y el segundo de registro? (fíjate en el tamaño de los paquetes y mira a qué se debe el cambio)
 
@@ -148,15 +143,15 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Puede verse el nombre del que efectúa la llamada, así como su dirección SIP?
 
-	Si. Nombre: Gregorio Robles Dirección SIP: grex@ekiga.net
+	Si, en el campo FROM. Nombre: Gregorio Robles Dirección SIP: grex@ekiga.net
 
  ** ¿Qué es lo que contiene el cuerpo de la trama? ¿En qué formato/protocolo está?
 
-	Protocolo SDP. Contiene todo los datos para describir la sesion, todos los formatos que soporta el 		que envia el INVITE
+	Protocolo SDP. Contiene todo los datos para describir la sesion, todos los formatos que soporta el 		que envia el INVITE.
 
  ** ¿Tiene éxito el primer intento? ¿Cómo lo sabes?
 
-	No, puesto que le mensaje de respuesta solicita una autenticaciión del proxy
+	No, puesto que le mensaje de respuesta solicita una autenticaciión del proxy.
 
  ** ¿En qué se diferencia el segundo INVITE más abajo del primero? ¿A qué crees que se debe esto?
 
@@ -166,7 +161,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Qué protocolo(s) se utiliza(n)? ¿Para qué sirven estos protocolos?
 
-	Protocolo RTP con codec H.261 ( aunque no se enviará video) y GT.711 para el audio, por lo que se 		esta produciendo una conexión de audio entre los usuarios.
+	Protocolo RTP, con codec H.261 y T.711 para el audio, por lo que se esta produciendo una conexión de 		audio y video entre los usuarios y RTCP.
 
 	Protocolo RTCP sirve para el control del flujo RTP.
 
@@ -183,25 +178,23 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 	AUDIO: G.711
 
-	RTP = 20 ms =>(6400/(160*8)) = 50 bits/seg) 
+	RTP = 20 ms 
 	RTCP = 5s
-
-	VIDEO: H.261
 	
-	El Jitter indica el retardo con el que llegan los paquetes.
+	VIDEO: H.261
 
-	SIN ACABAAAR !!
+	No significativo.
 
  ** ¿Cuántos bits/segundo estamos enviando?
 	
-	50 bits/segundo para audio (6400/(160*8)) = 50 bits/seg)
+	64000 bits/segundo
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
 12. Vamos a ver más a fondo el intercambio RTP. En Telephony hay una opción RTP. Empecemos mirando los flujos RTP.
  ** ¿Cuántos flujos hay? ¿por qué?
 
-	Existen 2 flujos RTP. Existen dos flujos RTP que pertenecen a la misma conversación, un de ellos con 		el codec H261 para el video de la conversación y otro con el codec G711 para el audio.
+	 Existen dos flujos RTP que pertenecen a la misma conversación, un de ellos con 		el 		codec H261 para el video de la conversación y otro con el codec G711 para el audio.
 
  ** ¿Cuántos paquetes se pierden?
 
@@ -221,7 +214,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 		Video: 153.24 ms
 
 
-	CONVERSACIÓN BUENA CALIDAD?!?!?!
+	No puesto que al analizar la gráfica de llegada de paquetes de la conexión, esperariamos ver una 	forma mucho más constante,en cambio vemos muchos picos y variaciones muy grandes.
 
 13. Elige un paquete RTP de audio. Analiza el flujo de audio en Telephony -> RTP -> Stream Analysis.
  ** ¿Cuánto valen el delta y el jitter para el primer paquete que ha llegado?
@@ -230,7 +223,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Podemos saber si éste es el primer paquete que nos han enviado?
 
-	Si, mirando el número de paquete. Como no es el paquete 0, no es el primer paquete.
+	No por que no sabemos que ha pasado antes de la captura.
 
  ** Los valores de jitter son menores de 10ms hasta un paquete dado. ¿Cuál?
 
@@ -238,7 +231,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿A qué se debe el cambio tan brusco del jitter?
 
-	A que el siguiente paquete llega con mucho retardo con respecto al paquete anterior.
+	A que el siguiente paquete llega con mucho retardo con respecto al paquete anterior debido a algun 		hecho puntual.
 
  ** ¿Es comparable este cambio con el tiempo desde la recepción del paquete anterior? ¿Por qué?
 
@@ -257,7 +250,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 	
  ** ¿Cuáles son sus SSRC? ¿Por qué hay varios SSRCs? ¿Hay CSRCs?
 
-	Números de paquetes SSRC : 196 y 611 ( Porque existen dos fuentes diferentes que componen RTP ( 1 de 		audio y otra de video ).
+	Números de paquetes SSRC : 196 y 611 ( Porque existen dos fuentes diferentes que componen RTP, uno 		de audio y otra de video ).
 
 	No hay CSRCs puesto que no existe ningun mezclador, los dos flujos viajan por separado.
 
@@ -272,7 +265,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Por qué crees que se envía varias veces?
 
-	Para evitar que se puedan perder través de la red.
+	Para evitar que se puedan perder través de la red y por que queremos acabar en ese momento con la 		conversación sin esperar al código de respuesta 200 OK del otro usuario
 
 16. Finalmente, se cierra la aplicación de VozIP.
  ** ¿Por qué aparece una instrucción SIP del tipo REGISTER?
@@ -312,8 +305,8 @@ Captura una sesión SIP de una conversación con el número SIP sip:9999@qxip.ne
 
  ** ¿Cuál es su periodicidad?
 
-	La periocidad 20 ms, puesto que el codec no cambia con respecto a la caputra proporcionada en la 	 practica.
-
+	La periocidad 20 ms, puesto que la cantidad de datos en cada paquete no cambia.
+	
  ** ¿Cuánto es el valor máximo del delta y los valores medios y máximo del jitter?
 	
 	El valor máximo de delta: 161.05 ms
@@ -321,9 +314,14 @@ Captura una sesión SIP de una conversación con el número SIP sip:9999@qxip.ne
 	El valor medio del jitter: 8.22 ms
 
  ** ¿Podrías reproducir la conversación desde Wireshark? ¿Cómo? Comprueba que poniendo un valor demasiado pequeño para el buffer de jitter, la conversación puede no tener la calidad necesaria.
+
+	Para reproducir el contenido de la conversación a través de wireshark, iremos a la opcion Telephony >
+	RTP > Stream Analysis > Player. Vemos que efectivamente con un jitter demasiado bajo, la calidad de 		la conversación cae.
+
+
  ** ¿Sabrías decir qué tipo de servicio ofrece sip:9999@qxip.net?
 
-
+	Un servicio de Musica streamig, una radio o algo similar.
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
