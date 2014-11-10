@@ -181,13 +181,16 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
  ** ¿Cuál es la periodicidad de los paquetes que se envían?
 
-	AUDIO: GT.711
+	AUDIO: G.711
 
-	RTP = 20 ms
+	RTP = 20 ms =>(6400/(160*8)) = 50 bits/seg) 
 	RTCP = 5s
 
 	VIDEO: H.261
+	
+	El Jitter indica el retardo con el que llegan los paquetes.
 
+	SIN ACABAAAR !!
 
  ** ¿Cuántos bits/segundo estamos enviando?
 	
@@ -197,37 +200,92 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 12. Vamos a ver más a fondo el intercambio RTP. En Telephony hay una opción RTP. Empecemos mirando los flujos RTP.
  ** ¿Cuántos flujos hay? ¿por qué?
+
+	Existen 2 flujos RTP. Existen dos flujos RTP que pertenecen a la misma conversación, un de ellos con 		el codec H261 para el video de la conversación y otro con el codec G711 para el audio.
+
  ** ¿Cuántos paquetes se pierden?
+
+	0% paquetes perdidos.
+
  ** ¿Cuál es el valor máximo del delta? ¿Y qué es lo que significa el valor de delta?
+
+	Valor máximo de delta = 1290.48 ms. Es el retardo máximo entre la llegada de dos paquetes.
+
  ** ¿Cuáles son los valores de jitter (medio y máximo)? ¿Qué quiere decir eso? ¿Estamos ante una conversación de calidad?
 
+	Jitter Maximo:
+		Audio: 119.64 ms
+		Video: 183.10 ms
+	Jitter Medio:
+		Audio: 42.50 ms
+		Video: 153.24 ms
+
+
+	CONVERSACIÓN BUENA CALIDAD?!?!?!
 
 13. Elige un paquete RTP de audio. Analiza el flujo de audio en Telephony -> RTP -> Stream Analysis.
  ** ¿Cuánto valen el delta y el jitter para el primer paquete que ha llegado?
+	
+	Los valores de Delta y Jitter son 0.
+
  ** ¿Podemos saber si éste es el primer paquete que nos han enviado?
+
+	Si, mirando el número de paquete. Como no es el paquete 0, no es el primer paquete.
+
  ** Los valores de jitter son menores de 10ms hasta un paquete dado. ¿Cuál?
+
+	Hasta el paquete 246 incluido los valores de jitter son menores a 10 ms. 
+
  ** ¿A qué se debe el cambio tan brusco del jitter?
+
+	A que el siguiente paquete llega con mucho retardo con respecto al paquete anterior.
+
  ** ¿Es comparable este cambio con el tiempo desde la recepción del paquete anterior? ¿Por qué?
+
+	Si puesto que el Jitter aumenatará cuando el tiempo delta crezca.
+
  ** ¿Cuál es la dependencia entre el tiempo transcurrido desde el paquete anterior y el valor de jitter?
 
+	La dependencia es directa. El Jitter aumentará como respuesta a un aumento en el valor de delta
+	(tiempo transcurrido entre un paquete y el siguiente)
+	
 
 14. En Telephony selecciona el menú VoIP calls. Verás que se lista la llamada de voz IP capturada en una ventana emergente. Selecciona esa llamada y pulsa el botón Graph.
  ** ¿Cuánto dura la conversación?
+
+	Stop Time - Start Time >> 39.2296 - 14.42267 = 24.80 seg
+	
  ** ¿Cuáles son sus SSRC? ¿Por qué hay varios SSRCs? ¿Hay CSRCs?
 
+	Números de paquetes SSRC : 196 y 611 ( Porque existen dos fuentes diferentes que componen RTP ( 1 de 		audio y otra de video ).
+
+	No hay CSRCs puesto que no existe ningun mezclador, los dos flujos viajan por separado.
 
 15. Identifica la trama donde se finaliza la conversación.
  ** ¿Qué método SIP se utiliza?
+
+	Método SIP: BYE.
+
  ** ¿En qué trama(s)?
+
+	Tramas 924,925,927 y 933
+
  ** ¿Por qué crees que se envía varias veces?
 
+	Para evitar que se puedan perder través de la red.
 
 16. Finalmente, se cierra la aplicación de VozIP.
  ** ¿Por qué aparece una instrucción SIP del tipo REGISTER?
+
+	Es el mensaje que manda el cliente para cerrar sesion en el servidor de ekiga. Para ello manda el 		campo Expires con valor 0.
+	
  ** ¿En qué trama sucede esto?
+		
+	Tramas 950 y 952.
+
  ** ¿En qué se diferencia con la instrucción que se utilizó con anterioridad (al principio de la sesión)?
 
-
+	En el campo Expires. En los Register utilizados para cerrar sesión este campo lleva el valor 0.
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
@@ -240,13 +298,28 @@ Captura una sesión SIP de una conversación con el número SIP sip:9999@qxip.ne
 
 17. Observa las diferencias en el inicio de la conversación entre el entorno del laboratorio y el del ejercicio anterior:
  ** ¿Es necesario el uso de DNS y STUN? ¿Por qué?
+
+	Si. Los mensajes STUN sirven para saber si estamos detrás de un NAT y si es así de que tipo que es. 		Y los mensajes de DNS sirven para conocer las IP de los dominios que pedimos.
+
  ** ¿Son diferentes el registro y la descripción de la sesión?
 
+	El registro es igual pero la descripción de la sesión no.
 
 18. Identifica las diferencias existentes entre esta conversación y la conversación anterior:
  ** ¿Cuántos flujos tenemos?
+
+	Dos flujos, ambos de audio.
+
  ** ¿Cuál es su periodicidad?
+
+	La periocidad 20 ms, puesto que el codec no cambia con respecto a la caputra proporcionada en la 	 practica.
+
  ** ¿Cuánto es el valor máximo del delta y los valores medios y máximo del jitter?
+	
+	El valor máximo de delta: 161.05 ms
+	El valor máximo del jitter: 30.91 ms
+	El valor medio del jitter: 8.22 ms
+
  ** ¿Podrías reproducir la conversación desde Wireshark? ¿Cómo? Comprueba que poniendo un valor demasiado pequeño para el buffer de jitter, la conversación puede no tener la calidad necesaria.
  ** ¿Sabrías decir qué tipo de servicio ofrece sip:9999@qxip.net?
 
